@@ -1,15 +1,19 @@
 import math
+from time import time
+
+t = time()
 
 
 class Node:
-    def __init__(self, zatopene=False):
+    def __init__(self, zatopeno=False):
         self.visited = False
         self.distance = math.inf
 
         self.connected_nodes = []
-        self.zatopene = zatopene
+        self.zatopeno = zatopeno
 
-        self.home = False
+        self.wet_distance = None
+        self.alt_distance = {}
 
     def connect(self, other):
         self.connected_nodes.append(other)
@@ -18,7 +22,8 @@ class Node:
 
 def init():
     """nodes_count, paths_count, limit_count = [
-        int(x) for x in input().split(" ")]  # node = křižovatka, path = cesta, limit = kolik zvládne cest bez rýmy
+        int(x) for x in input().split(" ")]  # node = křižovatka, path = cesta,
+        limit = kolik zvládne cest bez rýmy
     zatopene_nodes = input()
 
     join_nodes = [input() for _ in range(paths_count)]"""
@@ -38,49 +43,52 @@ def init():
     nodes = [Node() if zatopene_nodes[i] == 0 else Node(True)
              for i in range(nodes_count)]
 
-    connect_nodes(join_nodes, nodes)
-
-    print("Nodes:", nodes)
-
-    # [print(node.zatopene) for node in nodes] # Zatopenost check
-    nodes[-1].home = True
-    nodes[-1].distance = 0
-
-    print(graph_traversal(nodes[0]))
-
-    [print(node.distance) for node in nodes]
-
-
-def connect_nodes(joined_nodes, nodes):
-    for join in joined_nodes:
+    for join in join_nodes:
         first, second = join.split(" ")
         first, second = int(first), int(second)
 
         nodes[first].connect(nodes[second])
 
+    # print("Nodes:", nodes)
 
-def graph_traversal(node):
-    node.visited = True
-    min_distance = math.inf
+    # [print(node.zatopene) for node in nodes] # Zatopenost check
+    nodes[0].distance = 0
 
-    for i in node.connected_nodes:
-        print("s")
-        if i.visited:
-            if i.distance < min_distance:
-                min_distance = i.distance + 1
+    queue = [nodes[0]]
+
+    while len(queue) != 0:
+        curr = queue.pop(0)
+
+        if curr == nodes[-1]:
+            break
+        
+        if curr.wet_distance <= 0:
+            curr.distance = curr.alt_distance[0]
+            # tutaj som skončil
+    
+        if curr.wet_distance:
+            for next in curr.connected_nodes:
+                if not next.visited:
+                    queue.append(next)
+                    next.distance = curr.distance + 1
+                    next.visited = True
+                    next.wet_distance = curr.wet_distance - 1
+                    
+                if next.visited and next.wet_distance:
+                    next.alt_distance.append(curr.distance + 1)
         else:
-            node_distance = graph_traversal(i)
-            if node_distance.distance < min_distance:
-                min_distance = node_distance.distance
+            for next in curr.connected_nodes:
+                if not next.visited:
+                    queue.append(next)
+                    next.distance = curr.distance + 1
+                    next.visited = True
+                    if next.zatopeno:
+                        next.wet_distance = limit_count
 
-    if node.distance == 0:
-        return 0
+                if next.visited and next.wet_distance:
+                    next.alt_distance.append(curr.distance + 1)
 
-    node.distance = min_distance + 1
-
-    print(node.distance)
-
-    return node.distance
+    print(curr.distance)
 
 
-init()
+print(time() - t)
