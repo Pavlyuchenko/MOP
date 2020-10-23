@@ -2,17 +2,8 @@
 
 using namespace std;
 
-class Node
-{
-public:
-    Node()
-    {
-        int visited = 1;
-    }
-}
 
-int
-main()
+int main()
 {
     cout << "Hello Cpp" << endl;
 }
