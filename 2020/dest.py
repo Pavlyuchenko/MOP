@@ -9,9 +9,6 @@ class Node:
         self.connected_nodes = []
         self.zatopeno = zatopeno
 
-        self.wet_distance = None
-        self.alt_nodes = []
-
     def connect(self, other):
         self.connected_nodes.append(other)
         other.connected_nodes.append(self)
