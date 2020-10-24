@@ -24,8 +24,9 @@ def init(priklad_choose=1):
 
         zatopene_nodes = [int(x) for x in input().split(" ")]
 
-        nodes = [Node() if zatopene_nodes[i] == 0 else Node(True) for i in range(nodes_count)]
-        
+        nodes = [Node() if zatopene_nodes[i] == 0 else Node(True)
+                 for i in range(nodes_count)]
+
         for i in range(paths_count):
             first, second = [int(x) for x in input().split(" ")]
             nodes[first].connect(nodes[second])
@@ -54,7 +55,7 @@ def init(priklad_choose=1):
     elif priklad_choose == 5:
         # Problematikos
 
-        nodes_count, paths_count, limit_count = 11, 10, 2
+        nodes_count, paths_count, limit_count = 11, 11, 2
         zatopene_nodes = [int(x) for x in "0 0 0 0 0 0 1 0 0 0 0".split(" ")]
         join_nodes = ["0 1", "0 6", "1 2", "2 3", "3 4", "4 5", "5 8",
                       "6 7", "7 8", "8 9", "9 10"]
@@ -62,15 +63,17 @@ def init(priklad_choose=1):
     elif priklad_choose == 6:
         # Problematikos grandos
 
-        nodes_count, paths_count, limit_count = 24, 10, 2
+        nodes_count, paths_count, limit_count = 24, 36, 6
         zatopene_nodes = [
             int(x) for x in "0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0".split(" ")]
-        join_nodes = ["0 1", "0 3", "0 6", "1 2", "1 3", "1 4", "2 6", "2 7", "3 8", "4 7", "5 8", "6 9", "6 10", "7 11", "7 12", "8 13", "8 14", "9 15", "10 15", "10 16", "11 15", "11 17", "12 17", "12 18",
-                      "13 18", "14 18", "15 20", "15 21", "16 19", "17 20", "18 21", "18 22", "19 23", "20 23", "21 23", "22 23"]
+        join_nodes = ["0 1", "0 3", "0 6", "1 2", "1 3", "1 4", "2 6", "2 7", "3 8", "4 7",  # 10
+                      "5 8", "6 9", "6 10", "7 11", "7 12", "8 13", "8 14", "9 15", "10 15",  # 9
+                      "10 16", "11 15", "11 17", "12 17", "12 18", "13 18", "14 18", "15 20",  # 8
+                      "15 21", "16 19", "17 20", "18 21", "18 22", "19 23", "20 23", "21 23", "22 23"]  # 9
 
     if priklad_choose != 1:
         nodes = [Node() if zatopene_nodes[i] == 0 else Node(True)
-                for i in range(nodes_count)]
+                 for i in range(nodes_count)]
 
         for join in join_nodes:
             first, second = join.split(" ")
@@ -101,4 +104,4 @@ def init(priklad_choose=1):
     print(min_dist)
 
 
-init(1)
+init(4)
